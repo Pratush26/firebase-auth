@@ -1,0 +1,31 @@
+input {
+  background: #272626;
+  border-radius: 4px;
+  padding: 8px 16px;
+  width: 100%;
+}
+/* Fix Chrome autofill background */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #272626 inset;
+  -webkit-text-fill-color: white;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+label {
+    margin-top: 6px;
+    font-size: small;
+}
+
+nav a:active {
+    text-decoration: underline;
+}
+
+.btn {
+    background: #fff;
+    color: #000;
+    padding: 8px 16px;
+    border-radius: 6px;
+    margin: 10px auto;
+    font-weight: 600;
+    cursor: pointer;
+}
