@@ -1,10 +1,26 @@
 import { Link } from 'react-router'
 import '../utils/utility.css'
+import { useContext, useState } from 'react';
+import { AuthContext } from '../Context/AuthContext';
+
 export default function RegistrationPage () {
+    const [msg, setMsg] = useState({})
+    const {createUser} = useContext(AuthContext)
+    const handleRegister = (e) => {
+        e.preventDefault();
+        createUser(e.target.email.value, e.target.password.value).then(() => {
+            setMsg({type: "success", message: "Successfully Registered User"})
+            e.target.reset()
+        }).catch((c) => {
+            setMsg({type: "err", message: c.message})
+        })
+
+    }
     return (
         <main className='m-6 min-h-[80vh] flex flex-col items-center justify-center'>
+            {msg && <p className={`${msg.type === 'err' ? 'text-red-600' : 'text-green-600'}`}>{msg.message}</p>}
             <h1 className='text-3xl font-bold text-center m-4'>Registration Form</h1>
-            <form action="" className="flex flex-col items-start justify-center gap-1 w-1/3 mx-auto">
+            <form onSubmit={handleRegister} className="flex flex-col items-start justify-center gap-1 w-1/3 mx-auto">
                 <label htmlFor="name">Name:</label>
                 <input type="text" name="name" id="name" placeholder='Enter your name' />
                 <label htmlFor="email">Email:</label>
