@@ -1,18 +1,24 @@
-import { Link } from 'react-router'
+import { Link, Navigate, useNavigate } from 'react-router'
 import '../utils/utility.css'
 import { useContext, useState } from 'react';
 import { AuthContext } from '../Context/AuthContext';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-export default function RegistrationPage () {
+export default function RegistrationPage() {
     const [msg, setMsg] = useState({})
-    const {createUser} = useContext(AuthContext)
+    const [showPassword, setShowPassword] = useState(false)
+    const { user, createUser } = useContext(AuthContext)
+    const navigate = useNavigate()
+
+    if (user) return <Navigate to="/" ></Navigate>
     const handleRegister = (e) => {
         e.preventDefault();
         createUser(e.target.email.value, e.target.password.value).then(() => {
-            setMsg({type: "success", message: "Successfully Registered User"})
+            setMsg({ type: "success", message: "Successfully Registered User" })
             e.target.reset()
+            setTimeout(() => navigate('/login'), 50);
         }).catch((c) => {
-            setMsg({type: "err", message: c.message})
+            setMsg({ type: "err", message: c.message })
         })
 
     }
@@ -26,7 +32,10 @@ export default function RegistrationPage () {
                 <label htmlFor="email">Email:</label>
                 <input type="email" name="email" id="email" placeholder='Enter your email' />
                 <label htmlFor="password">Password:</label>
-                <input type="password" name="password" id="password" placeholder='Enter your password' />
+                <div className='relative w-full'>
+                    <input type={`${showPassword ? 'text' : 'password'}`} name="password" id="password" placeholder='Enter your password' />
+                    <button type='button' onClick={() => setShowPassword(!showPassword)} className='absolute p-1 right-2 top-1/2 -translate-y-1/2 cursor-pointer'>{showPassword ? <FaEyeSlash /> : <FaEye />}</button>
+                </div>
                 <label htmlFor="photoLink">Photo Link:</label>
                 <input type="url" name="photoLink" id="photoLink" placeholder='Give your photo url' />
                 <button type="submit" className='btn'>Register</button>
